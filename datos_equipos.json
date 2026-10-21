@@ -1,0 +1,21 @@
+{
+  "concurso": "Tradicional Concurso de Altares de Muertos - Grupo Bacis",
+  "lema": "La Magia de Recordar",
+  "fechaLimiteInscripcion": "2026-10-23",
+  "fechaCierreConcurso": "2026-10-31",
+  "premios": {
+    "primerLugar": {
+      "monto": "$3,000",
+      "equipoId": null
+    },
+    "segundoLugar": {
+      "monto": "$2,000",
+      "equipoId": null
+    },
+    "tercerLugar": {
+      "monto": "$1,500",
+      "equipoId": null
+    }
+  },
+  "equipos": []
+}

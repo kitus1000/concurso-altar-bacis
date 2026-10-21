@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Concurso de Altares de Muertos «La Magia de Recordar» | Grupo Bacis - Capital Humano</title>
+  <link rel="icon" type="image/png" href="logo_bacis.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-obsidian: #0b0811;
+      --bg-card: rgba(22, 16, 32, 0.86);
+      --bg-card-hover: rgba(31, 22, 44, 0.94);
+      --cempasuchil: #f58a07;
+      --cempasuchil-bright: #ffb703;
+      --cempasuchil-deep: #d95f02;
+      --turquesa: #00a896;
+      --turquesa-light: #2ec4b6;
+      --magenta: #d81b60;
+      --magenta-light: #ff477e;
+      --cream: #fff8eb;
+      --text-main: #fdf8f0;
+      --text-muted: #cbd5e1;
+      --text-soft: #b8b0c8;
+      --gold-border: rgba(255, 183, 3, 0.32);
+      --glow-orange: 0 0 28px rgba(245, 138, 7, 0.35);
+      --glow-gold: 0 0 35px rgba(255, 183, 3, 0.45);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-obsidian);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(216, 27, 96, 0.14) 0%, transparent 40%),
+        radial-gradient(circle at 85% 12%, rgba(0, 168, 150, 0.14) 0%, transparent 40%),
+        radial-gradient(circle at 50% 45%, rgba(245, 138, 7, 0.12) 0%, transparent 55%),
+        linear-gradient(180deg, #09060e 0%, #130d1e 50%, #09060e 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient floating petals canvas */
+    #petalsCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* =====================================================================
+       1. CINEMATIC MINING ALTAR INTRO / LOADER ("ALTAR MINERO GRUPO BACIS")
+       ===================================================================== */
+    #miningAltarIntro {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background:
+        radial-gradient(circle at 50% 58%, rgba(245, 138, 7, 0.25) 0%, rgba(18, 11, 28, 0.96) 52%, #06040a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.9s;
+      overflow: hidden;
+    }
+
+    #miningAltarIntro.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-socavon-arch {
+      position: relative;
+      width: min(680px, 95vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .intro-badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid rgba(255, 183, 3, 0.4);
+      color: var(--cempasuchil-bright);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      box-shadow: 0 0 20px rgba(245, 138, 7, 0.25);
+    }
+
+    .intro-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(1.45rem, 3.5vw, 2.35rem);
+      text-align: center;
+      background: linear-gradient(135deg, #fff8eb 0%, #ffb703 55%, #f58a07 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 6px 28px rgba(245, 138, 7, 0.35);
+      margin-bottom: 4px;
+    }
+
+    .intro-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+      color: #e9d8fd;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    /* Animated SVG Mining Altar container */
+    .mining-altar-stage {
+      position: relative;
+      width: min(560px, 92vw);
+      height: auto;
+      filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.85));
+    }
+
+    /* Miner helmet beam animation */
+    .helmet-beam {
+      transform-origin: 280px 76px;
+      animation: beamSweep 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes beamSweep {
+      0% { transform: rotate(-7deg); opacity: 0.55; }
+      50% { transform: rotate(0deg); opacity: 0.85; }
+      100% { transform: rotate(7deg); opacity: 0.6; }
+    }
+
+    /* Candle flame flicker */
+    .candle-flame {
+      transform-origin: center bottom;
+      animation: flameFlicker 1.6s ease-in-out infinite alternate;
+    }
+    .candle-flame:nth-child(odd) {
+      animation-duration: 1.25s;
+    }
+    @keyframes flameFlicker {
+      0% { transform: scale(1, 1) rotate(-2deg); opacity: 0.92; }
+      50% { transform: scale(1.06, 1.12) rotate(2deg); opacity: 1; }
+      100% { transform: scale(0.95, 0.94) rotate(-1deg); opacity: 0.88; }
+    }
+
+    .candle-halo {
+      animation: haloPulse 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes haloPulse {
+      0% { opacity: 0.28; r: 16px; }
+      100% { opacity: 0.62; r: 22px; }
+    }
+
+    /* Copal smoke rising */
+    .copal-smoke {
+      stroke-dasharray: 90;
+      stroke-dashoffset: 90;
+      animation: smokeRise 3.6s ease-in-out infinite;
+    }
+    @keyframes smokeRise {
+      0% { stroke-dashoffset: 90; opacity: 0; transform: translateY(6px); }
+      45% { opacity: 0.55; }
+      100% { stroke-dashoffset: 0; opacity: 0; transform: translateY(-18px); }
+    }
+
+    /* Progress bar & status inside Intro */
+    .intro-progress-wrap {
+      width: min(420px, 86vw);
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .intro-status-text {
+      font-size: 0.88rem;
+      color: var(--cream);
+      margin-bottom: 8px;
+      min-height: 1.3em;
+      font-style: italic;
+      opacity: 0.92;
+    }
+
+    .intro-progress-bar {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 183, 3, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .intro-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--turquesa), var(--magenta), var(--cempasuchil), var(--cempasuchil-bright));
+      box-shadow: 0 0 16px var(--cempasuchil-bright);
+      transition: width 0.25s ease;
+    }
+
+    .btn-enter-altar {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      border: 1.5px solid var(--cempasuchil-bright);
+      background: linear-gradient(135deg, #f58a07 0%, #d95f02 100%);
+      color: #fff;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 28px rgba(245, 138, 7, 0.55);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-enter-altar:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 38px rgba(255, 183, 3, 0.85);
+    }
+
+    /* =====================================================================
+       2. TOP PAPEL PICADO GARLAND & NAVBAR
+       ===================================================================== */
+    .papel-picado-top {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      overflow: hidden;
+      background: rgba(9, 6, 14, 0.9);
+      padding-top: 2px;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+    }
+
+    .papel-picado-strip {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 10px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .picado-flag {
+      flex: 1 1 120px;
+      max-width: 165px;
+      height: 54px;
+      transform-origin: top center;
+      animation: flagSway 4.2s ease-in-out infinite alternate;
+    }
+    .picado-flag:nth-child(even) {
+      animation-duration: 3.6s;
+      animation-delay: -1.2s;
+    }
+    @keyframes flagSway {
+      0% { transform: rotate(-1.1deg); }
+      100% { transform: rotate(1.1deg); }
+    }
+
+    /* Sticky Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(11, 8, 17, 0.85);
+      border-bottom: 1px solid rgba(255, 183, 3, 0.22);
+      padding: 12px 24px;
+    }
+
+    .navbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo-wrap {
+      width: 58px;
+      height: 46px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--cempasuchil-bright);
+      box-shadow: 0 0 16px rgba(245, 138, 7, 0.35);
+    }
+
+    .brand-logo-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-titles h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .brand-titles span {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--turquesa-light);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 15px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.13);
+      border-color: var(--cempasuchil-bright);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cempasuchil) 0%, var(--cempasuchil-deep) 100%);
+      border-color: var(--cempasuchil-bright);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(245, 138, 7, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--cempasuchil-bright) 0%, var(--cempasuchil) 100%);
+      color: #120b1d;
+    }
+
+    .btn-turquesa {
+      background: rgba(0, 168, 150, 0.18);
+      border-color: var(--turquesa-light);
+      color: #e6fffa;
+    }
+
+    .btn-magenta {
+      background: rgba(216, 27, 96, 0.2);
+      border-color: var(--magenta-light);
+      color: #ffe3ec;
+    }
+
+    /* =====================================================================
+       3. HERO SECTION & OFFICIAL POSTER DETAILS
+       ===================================================================== */
+    .container {
+      position: relative;
+      z-index: 5;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245, 138, 7, 0.22) 0%, transparent 62%),
+        linear-gradient(145deg, rgba(28, 19, 41, 0.92) 0%, rgba(15, 11, 24, 0.95) 100%);
+      border: 1.5px solid rgba(255, 183, 3, 0.35);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65), inset 0 0 40px rgba(245, 138, 7, 0.08);
+      padding: 36px 28px 32px;
+      margin-bottom: 36px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Corner Cempasúchil ornaments inside hero */
+    .corner-flower {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      pointer-events: none;
+      opacity: 0.92;
+    }
+    .corner-flower.tl { top: -10px; left: -10px; }
+    .corner-flower.tr { top: -10px; right: -10px; transform: scaleX(-1); }
+    .corner-flower.bl { bottom: -10px; left: -10px; transform: scaleY(-1); }
+    .corner-flower.br { bottom: -10px; right: -10px; transform: scale(-1, -1); }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 16px;
+      border-radius: 999px;
+      background: rgba(0, 168, 150, 0.16);
+      border: 1px solid rgba(46, 196, 182, 0.45);
+      color: var(--turquesa-light);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(1.7rem, 4vw, 2.85rem);
+      font-weight: 900;
+      line-height: 1.15;
+      background: linear-gradient(180deg, #ffffff 0%, #ffe6a7 55%, #f58a07 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .hero-ribbon {
+      display: inline-block;
+      margin: 6px auto 18px;
+      padding: 8px 30px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d95f02 0%, #f58a07 50%, #d95f02 100%);
+      color: #160f24;
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: clamp(0.95rem, 2vw, 1.22rem);
+      letter-spacing: 0.14em;
+      box-shadow: 0 6px 24px rgba(245, 138, 7, 0.45);
+      border: 1.5px solid #ffe6a7;
+    }
+
+    .hero-desc {
+      max-width: 720px;
+      margin: 0 auto 26px;
+      color: var(--text-soft);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    /* Official Dates & KPIs Strip */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .kpi-box {
+      background: rgba(12, 9, 20, 0.78);
+      border: 1px solid rgba(255, 183, 3, 0.25);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--turquesa), var(--cempasuchil), var(--magenta));
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-soft);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--cempasuchil-bright);
+    }
+
+    .kpi-sub {
+      font-size: 0.78rem;
+      color: var(--turquesa-light);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* =====================================================================
+       4. PREMIACIÓN OFICIAL Y PODIO DE GANADORES ($3,000 | $2,000 | $1,500)
+       ===================================================================== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 183, 3, 0.22);
+    }
+
+    .section-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .section-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+    }
+
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+      margin-bottom: 44px;
+      align-items: stretch;
+    }
+
+    .podium-card {
+      position: relative;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1.5px solid rgba(255, 183, 3, 0.28);
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s, box-shadow 0.25s;
+      overflow: hidden;
+    }
+
+    .podium-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .podium-card.place-1 {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 183, 3, 0.25) 0%, transparent 65%),
+        var(--bg-card);
+      border-color: #ffb703;
+      box-shadow: 0 12px 38px rgba(245, 138, 7, 0.28);
+    }
+
+    .podium-card.place-2 {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0, 168, 150, 0.2) 0%, transparent 65%),
+        var(--bg-card);
+      border-color: var(--turquesa-light);
+    }
+
+    .podium-card.place-3 {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(216, 27, 96, 0.2) 0%, transparent 65%),
+        var(--bg-card);
+      border-color: var(--magenta-light);
+    }
+
+    .medal-badge {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .place-1 .medal-badge {
+      background: linear-gradient(135deg, #ffe066, #f58a07);
+    }
+    .place-2 .medal-badge {
+      background: linear-gradient(135deg, #e2e8f0, #64748b);
+    }
+    .place-3 .medal-badge {
+      background: linear-gradient(135deg, #f6ad55, #9c4221);
+    }
+
+    .place-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .prize-amount {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--cempasuchil-bright);
+      margin: 4px 0 14px;
+      text-shadow: 0 2px 14px rgba(245, 138, 7, 0.4);
+    }
+
+    .winner-box {
+      width: 100%;
+      flex: 1;
+      background: rgba(10, 7, 16, 0.68);
+      border: 1px dashed rgba(255, 183, 3, 0.35);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 145px;
+    }
+
+    .winner-photo {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 183, 3, 0.4);
+      cursor: pointer;
+    }
+
+    .winner-team-name {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+
+    .winner-meta {
+      font-size: 0.82rem;
+      color: var(--turquesa-light);
+      font-weight: 600;
+    }
+
+    .winner-leader {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .winner-empty {
+      color: var(--text-soft);
+      font-size: 0.86rem;
+      font-style: italic;
+    }
+
+    .winner-select {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 183, 3, 0.35);
+      color: #fff;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .winner-select option {
+      background: #161020;
+      color: #fff;
+    }
+
+    /* =====================================================================
+       5. REGISTRATION FORM & TEAM ALTAR GALLERY
+       ===================================================================== */
+    .main-split {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .main-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-panel {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(255, 183, 3, 0.32);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+      position: sticky;
+      top: 84px;
+    }
+
+    .form-panel-header {
+      border-bottom: 1px solid rgba(255, 183, 3, 0.22);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+
+    .form-panel-header h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--cempasuchil-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-panel-header p {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .num-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+      background: var(--cempasuchil);
+    }
+    .num-pill.c2 { background: var(--turquesa); }
+    .num-pill.c3 { background: var(--magenta); }
+    .num-pill.c4 { background: #374151; border: 1px solid var(--cempasuchil-bright); }
+
+    .input-control {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(9, 6, 15, 0.75);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-control:focus {
+      outline: none;
+      border-color: var(--cempasuchil-bright);
+      box-shadow: 0 0 0 3px rgba(245, 138, 7, 0.22);
+    }
+
+    /* Solicitud de Materiales Cream/Amber Box matching the PDF */
+    .materiales-box {
+      background: rgba(255, 248, 225, 0.08);
+      border: 1px solid rgba(255, 183, 3, 0.45);
+      border-left: 4px solid var(--cempasuchil);
+      border-radius: 12px;
+      padding: 14px;
+      margin: 16px 0;
+    }
+
+    .materiales-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--cempasuchil-bright);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .radio-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .radio-option input {
+      accent-color: var(--cempasuchil);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .materiales-emails {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .materiales-emails a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--turquesa-light);
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 4px;
+      margin-right: 10px;
+    }
+
+    .materiales-emails a:hover {
+      text-decoration: underline;
+    }
+
+    /* Photo Dropzone */
+    .photo-dropzone {
+      border: 1.5px dashed rgba(255, 183, 3, 0.45);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      background: rgba(11, 8, 17, 0.55);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .photo-dropzone:hover {
+      border-color: var(--cempasuchil-bright);
+      background: rgba(245, 138, 7, 0.08);
+    }
+
+    .photo-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .preview-thumb {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--cempasuchil-bright);
+    }
+
+    .preview-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-remove {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(216, 27, 96, 0.9);
+      color: #fff;
+      border: none;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-box {
+      flex: 1 1 240px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 183, 3, 0.28);
+      background: rgba(18, 13, 28, 0.85);
+      color: #fff;
+      font-size: 0.88rem;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cempasuchil-bright);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      cursor: pointer;
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-soft);
+      transition: all 0.2s;
+    }
+
+    .filter-pill.active, .filter-pill:hover {
+      background: rgba(245, 138, 7, 0.22);
+      border-color: var(--cempasuchil-bright);
+      color: #fff;
+    }
+
+    /* Team Altar Cards Grid */
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 20px;
+    }
+
+    .team-card {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(255, 183, 3, 0.25);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      position: relative;
+    }
+
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cempasuchil-bright);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6), 0 0 24px rgba(245, 138, 7, 0.18);
+    }
+
+    .team-card-banner {
+      position: relative;
+      height: 195px;
+      background:
+        radial-gradient(circle at 50% 60%, rgba(245, 138, 7, 0.25), rgba(14, 10, 22, 0.95));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 183, 3, 0.22);
+    }
+
+    .team-card-banner img.main-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.35s ease;
+    }
+
+    .team-card-banner:hover img.main-photo {
+      transform: scale(1.04);
+    }
+
+    .folio-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(11, 8, 17, 0.85);
+      border: 1px solid var(--cempasuchil-bright);
+      color: var(--cempasuchil-bright);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .photo-count-pill {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(11, 8, 17, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .award-ribbon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+    .award-ribbon.p1 { background: linear-gradient(135deg, #ffe066, #f58a07); color: #1a1105; }
+    .award-ribbon.p2 { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #0f172a; }
+    .award-ribbon.p3 { background: linear-gradient(135deg, #fbd38d, #c05621); color: #fff; }
+
+    .team-card-body {
+      padding: 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dept-tag {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(0, 168, 150, 0.16);
+      color: var(--turquesa-light);
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .team-name-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .team-info-list {
+      list-style: none;
+      font-size: 0.84rem;
+      color: var(--text-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .team-info-list strong {
+      color: var(--cream);
+    }
+
+    .thumb-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .thumb-strip img {
+      width: 46px;
+      height: 46px;
+      border-radius: 7px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 183, 3, 0.35);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .team-card-actions {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: space-between;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      border-radius: 8px;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 54px 24px;
+      background: rgba(20, 14, 30, 0.65);
+      border: 1.5px dashed rgba(255, 183, 3, 0.3);
+      border-radius: 20px;
+    }
+
+    /* =====================================================================
+       6. MODALS (POSTER, LIGHTBOX, GITHUB SYNC)
+       ===================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(6, 4, 10, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #161021;
+      border: 1.5px solid var(--cempasuchil-bright);
+      border-radius: 20px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 28px 20px;
+      border-top: 1px solid rgba(255, 183, 3, 0.2);
+      color: var(--text-soft);
+      font-size: 0.84rem;
+      background: rgba(8, 5, 13, 0.9);
+      position: relative;
+      z-index: 5;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 5000;
+      background: linear-gradient(135deg, #1a1228, #271a3c);
+      border: 1.5px solid var(--cempasuchil-bright);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Cempasúchil Petals & Candle Embers Canvas -->
+  <canvas id="petalsCanvas"></canvas>
+
+  <!-- =======================================================================
+       1. CINEMATIC MINING ALTAR ENTRY / LOADER ("ALTAR MINERO GRUPO BACIS")
+       ======================================================================= -->
+  <div id="miningAltarIntro">
+    <div class="intro-socavon-arch">
+      <div class="intro-badge-top">
+        <span>⛏️ GRUPO BACIS • CAPITAL HUMANO</span>
+      </div>
+      <h1 class="intro-title">ALTAR MINERO DE MUERTOS</h1>
+      <p class="intro-subtitle">« LA MAGIA DE RECORDAR »</p>
+
+      <!-- Intricate SVG Mining Altar of 3 Levels + Miner Helmet + Flickering Candles -->
+      <svg class="mining-altar-stage" viewBox="0 0 560 390" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="socavonGlow" cx="50%" cy="55%" r="52%">
+            <stop offset="0%" stop-color="#ffb703" stop-opacity="0.45"/>
+            <stop offset="55%" stop-color="#f58a07" stop-opacity="0.16"/>
+            <stop offset="100%" stop-color="#0b0811" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="beamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fff8eb" stop-opacity="0.75"/>
+            <stop offset="40%" stop-color="#ffb703" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#f58a07" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="tierWood1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3b232e"/>
+            <stop offset="50%" stop-color="#593544"/>
+            <stop offset="100%" stop-color="#3b232e"/>
+          </linearGradient>
+          <linearGradient id="tierWood2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#2a1821"/>
+            <stop offset="50%" stop-color="#432734"/>
+            <stop offset="100%" stop-color="#2a1821"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Background Socavón Aura -->
+        <circle cx="280" cy="210" r="190" fill="url(#socavonGlow)"/>
+
+        <!-- Mine Timber Arch (Marco de Socavón Minero) -->
+        <path d="M 115,350 L 145,95 L 415,95 L 445,350" fill="none" stroke="#3e2723" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 115,350 L 145,95 L 415,95 L 445,350" fill="none" stroke="#f58a07" stroke-width="2" stroke-dasharray="8 6" opacity="0.7"/>
+
+        <!-- Marigold Arch (Arco de Cempasúchil) -->
+        <g id="marigoldArch">
+          <circle cx="145" cy="115" r="16" fill="#d95f02"/><circle cx="145" cy="115" r="10" fill="#ffb703"/>
+          <circle cx="165" cy="88" r="17" fill="#f58a07"/><circle cx="165" cy="88" r="11" fill="#ffb703"/>
+          <circle cx="195" cy="68" r="18" fill="#d95f02"/><circle cx="195" cy="68" r="11" fill="#ffb703"/>
+          <circle cx="232" cy="54" r="19" fill="#f58a07"/><circle cx="232" cy="54" r="12" fill="#ffb703"/>
+          <circle cx="280" cy="48" r="22" fill="#d95f02"/><circle cx="280" cy="48" r="14" fill="#ffb703"/>
+          <circle cx="328" cy="54" r="19" fill="#f58a07"/><circle cx="328" cy="54" r="12" fill="#ffb703"/>
+          <circle cx="365" cy="68" r="18" fill="#d95f02"/><circle cx="365" cy="68" r="11" fill="#ffb703"/>
+          <circle cx="395" cy="88" r="17" fill="#f58a07"/><circle cx="395" cy="88" r="11" fill="#ffb703"/>
+          <circle cx="415" cy="115" r="16" fill="#d95f02"/><circle cx="415" cy="115" r="10" fill="#ffb703"/>
+        </g>
+
+        <!-- Volumetric Miner Headlamp Beam -->
+        <polygon class="helmet-beam" points="280,76 130,360 430,360" fill="url(#beamGrad)"/>
+
+        <!-- Crossed Pickaxe & Shovel behind Top Tier -->
+        <g stroke="#e2e8f0" stroke-width="4" stroke-linecap="round">
+          <line x1="215" y1="145" x2="345" y2="55" stroke="#b45309" stroke-width="5"/>
+          <line x1="345" y1="145" x2="215" y2="55" stroke="#b45309" stroke-width="5"/>
+          <path d="M 198,68 Q 215,42 234,62" fill="none" stroke="#cbd5e1" stroke-width="4.5"/>
+          <polygon points="340,50 358,42 350,62" fill="#94a3b8" stroke="none"/>
+        </g>
+
+        <!-- TIER 3 (BASE LEVEL OF ALTAR) -->
+        <rect x="90" y="295" width="380" height="55" rx="6" fill="url(#tierWood1)" stroke="#ffb703" stroke-width="1.2"/>
+        <rect x="90" y="295" width="380" height="12" fill="url(#tierWood2)"/>
+        <!-- Papel picado on Tier 3 -->
+        <polygon points="110,295 150,295 130,316" fill="#00a896"/>
+        <polygon points="160,295 200,295 180,316" fill="#d81b60"/>
+        <polygon points="210,295 250,295 230,316" fill="#f58a07"/>
+        <polygon points="260,295 300,295 280,316" fill="#ffb703"/>
+        <polygon points="310,295 350,295 330,316" fill="#f58a07"/>
+        <polygon points="360,295 400,295 380,316" fill="#d81b60"/>
+        <polygon points="410,295 450,295 430,316" fill="#00a896"/>
+
+        <!-- TIER 2 (MIDDLE LEVEL OF ALTAR) -->
+        <rect x="140" y="220" width="280" height="75" rx="6" fill="url(#tierWood1)" stroke="#ffb703" stroke-width="1.2"/>
+        <rect x="140" y="220" width="280" height="11" fill="url(#tierWood2)"/>
+        <!-- Papel picado on Tier 2 -->
+        <polygon points="155,220 195,220 175,239" fill="#d81b60"/>
+        <polygon points="210,220 250,220 230,239" fill="#00a896"/>
+        <polygon points="260,220 300,220 280,239" fill="#ffb703"/>
+        <polygon points="310,220 350,220 330,239" fill="#00a896"/>
+        <polygon points="365,220 405,220 385,239" fill="#d81b60"/>
+
+        <!-- TIER 1 (TOP ALTAR SANCTUARY) -->
+        <rect x="195" y="140" width="170" height="80" rx="6" fill="url(#tierWood1)" stroke="#ffb703" stroke-width="1.5"/>
+        <rect x="195" y="140" width="170" height="10" fill="url(#tierWood2)"/>
+
+        <!-- Framed Portrait / Shield of Grupo Bacis on Top Tier -->
+        <rect x="252" y="154" width="56" height="58" rx="4" fill="#fff8eb" stroke="#d97706" stroke-width="4"/>
+        <text x="280" y="186" text-anchor="middle" font-family="Cinzel, serif" font-weight="900" font-size="22" fill="#1e293b">GB</text>
+        <text x="280" y="201" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="7" fill="#d95f02">GRUPO BACIS</text>
+
+        <!-- Golden Miner Helmet Crowned Above Altar -->
+        <path d="M 248,92 C 248,64 312,64 312,92 Z" fill="#ffb703" stroke="#b45309" stroke-width="2.5"/>
+        <rect x="242" y="90" width="76" height="7" rx="3.5" fill="#d97706"/>
+        <!-- Miner Headlamp -->
+        <circle cx="280" cy="76" r="8" fill="#1e293b" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="280" cy="76" r="5" fill="#fff8eb"/>
+
+        <!-- Sugar Skulls (Calaveritas) on Tier 1 -->
+        <g transform="translate(218, 196)">
+          <circle cx="0" cy="0" r="11" fill="#fff8eb" stroke="#1e293b" stroke-width="1.5"/>
+          <circle cx="-4" cy="-2" r="2.8" fill="#00a896"/>
+          <circle cx="4" cy="-2" r="2.8" fill="#d81b60"/>
+          <polygon points="0,1 -2,5 2,5" fill="#1e293b"/>
+        </g>
+        <g transform="translate(342, 196)">
+          <circle cx="0" cy="0" r="11" fill="#fff8eb" stroke="#1e293b" stroke-width="1.5"/>
+          <circle cx="-4" cy="-2" r="2.8" fill="#d81b60"/>
+          <circle cx="4" cy="-2" r="2.8" fill="#00a896"/>
+          <polygon points="0,1 -2,5 2,5" fill="#1e293b"/>
+        </g>
+
+        <!-- Copal Incense Burner & Rising Smoke -->
+        <path class="copal-smoke" d="M 280,285 C 268,265 292,250 278,230" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+        <path class="copal-smoke" d="M 286,285 C 296,265 272,248 286,225" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- Flickering Veladoras (Candles) Across the 3 Tiers -->
+        <!-- Tier 2 Candles -->
+        <g transform="translate(170, 265)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#ffb703" opacity="0.4"/>
+          <rect x="-6" y="0" width="12" height="28" rx="2" fill="#fff8eb" stroke="#cbd5e1"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+          <path class="candle-flame" d="M 0,-12 C 2.5,-7 2.5,-2 0,0 C -2.5,-2 -2.5,-7 0,-12 Z" fill="#ffffff"/>
+        </g>
+        <g transform="translate(230, 265)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#ffb703" opacity="0.4"/>
+          <rect x="-6" y="0" width="12" height="28" rx="2" fill="#fff8eb" stroke="#cbd5e1"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+          <path class="candle-flame" d="M 0,-12 C 2.5,-7 2.5,-2 0,0 C -2.5,-2 -2.5,-7 0,-12 Z" fill="#ffffff"/>
+        </g>
+        <g transform="translate(330, 265)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#ffb703" opacity="0.4"/>
+          <rect x="-6" y="0" width="12" height="28" rx="2" fill="#fff8eb" stroke="#cbd5e1"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+          <path class="candle-flame" d="M 0,-12 C 2.5,-7 2.5,-2 0,0 C -2.5,-2 -2.5,-7 0,-12 Z" fill="#ffffff"/>
+        </g>
+        <g transform="translate(390, 265)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#ffb703" opacity="0.4"/>
+          <rect x="-6" y="0" width="12" height="28" rx="2" fill="#fff8eb" stroke="#cbd5e1"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+          <path class="candle-flame" d="M 0,-12 C 2.5,-7 2.5,-2 0,0 C -2.5,-2 -2.5,-7 0,-12 Z" fill="#ffffff"/>
+        </g>
+
+        <!-- Tier 3 Base Candles & Cempasúchil Mounds -->
+        <g transform="translate(125, 322)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#f58a07" opacity="0.45"/>
+          <rect x="-6" y="0" width="12" height="26" rx="2" fill="#fff8eb"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+        </g>
+        <g transform="translate(435, 322)">
+          <circle class="candle-halo" cx="0" cy="-12" r="18" fill="#f58a07" opacity="0.45"/>
+          <rect x="-6" y="0" width="12" height="26" rx="2" fill="#fff8eb"/>
+          <path class="candle-flame" d="M 0,-18 C 5,-10 5,-3 0,0 C -5,-3 -5,-10 0,-18 Z" fill="#ffb703"/>
+        </g>
+
+        <!-- Marigold row at bottom of altar -->
+        <circle cx="95" cy="350" r="16" fill="#f58a07"/><circle cx="95" cy="350" r="9" fill="#ffb703"/>
+        <circle cx="155" cy="352" r="14" fill="#d95f02"/><circle cx="155" cy="352" r="8" fill="#ffb703"/>
+        <circle cx="215" cy="352" r="15" fill="#f58a07"/><circle cx="215" cy="352" r="9" fill="#ffb703"/>
+        <circle cx="280" cy="352" r="17" fill="#d95f02"/><circle cx="280" cy="352" r="10" fill="#ffb703"/>
+        <circle cx="345" cy="352" r="15" fill="#f58a07"/><circle cx="345" cy="352" r="9" fill="#ffb703"/>
+        <circle cx="405" cy="352" r="14" fill="#d95f02"/><circle cx="405" cy="352" r="8" fill="#ffb703"/>
+        <circle cx="465" cy="350" r="16" fill="#f58a07"/><circle cx="465" cy="350" r="9" fill="#ffb703"/>
+      </svg>
+
+      <div class="intro-progress-wrap">
+        <div id="introStatusText" class="intro-status-text">Iluminando el socavón y encendiendo veladoras...</div>
+        <div class="intro-progress-bar">
+          <div id="introProgressFill" class="intro-progress-fill"></div>
+        </div>
+        <button class="btn-enter-altar" onclick="closeIntroAltar()">
+          🕯️ ENTRAR AL ALTAR DE EQUIPOS
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       2. ANIMATED PAPEL PICADO TOP BANNER
+       ======================================================================= -->
+  <div class="papel-picado-top" id="topPapelPicado"></div>
+
+  <!-- =======================================================================
+       3. STICKY CORPORATE NAVBAR
+       ======================================================================= -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="brand-block">
+        <div class="brand-logo-wrap">
+          <img src="logo_bacis.png" alt="Logo Grupo Bacis" />
+        </div>
+        <div class="brand-titles">
+          <h1>GRUPO BACIS</h1>
+          <span>CAPITAL HUMANO • R.H. UNIDAD</span>
+        </div>
+      </a>
+
+      <nav class="nav-actions">
+        <a href="#seccionEquipos" class="btn btn-primary">➕ Registrar Equipo / Altar</a>
+        <a href="#seccionPremiacion" class="btn btn-turquesa">🏆 Premiación Oficial</a>
+        <a href="Formato_Inscripcion_Concurso_Altares_Muertos_Grupo_Bacis.pdf" download class="btn">
+          📄 Descargar PDF Editable
+        </a>
+        <button class="btn btn-magenta" onclick="openPosterModal()">🖼️ Ver Cartel Oficial</button>
+        <button class="btn" onclick="replayIntroAltar()">🕯️ Intro Altar Minero</button>
+        <button class="btn" onclick="openSyncModal()">💾 Guardar / GitHub</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =======================================================================
+       4. MAIN CONTENT CONTAINER
+       ======================================================================= -->
+  <main class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero-card">
+      <div class="corner-flower tl" id="flowerTL"></div>
+      <div class="corner-flower tr" id="flowerTR"></div>
+      <div class="corner-flower bl" id="flowerBL"></div>
+      <div class="corner-flower br" id="flowerBR"></div>
+
+      <div class="hero-eyebrow">
+        🌼 TRADICIÓN, IDENTIDAD Y ORGULLO MINERO • INSCRIPCIONES EN R.H. UNIDAD
+      </div>
+      <h2 class="hero-title">CONCURSO DE ALTARES DE MUERTOS</h2>
+      <div class="hero-ribbon">« LA MAGIA DE RECORDAR »</div>
+      <p class="hero-desc">
+        Plataforma oficial de <strong>Capital Humano – Grupo Bacis</strong> para el registro de equipos participantes,
+        galería fotográfica de altares y premiación oficial de nuestra temporada de Día de Muertos.
+      </p>
+
+      <div class="kpi-grid">
+        <div class="kpi-box">
+          <div class="kpi-label">📅 Fecha Límite de Inscripción</div>
+          <div class="kpi-value">23 de Octubre</div>
+          <div class="kpi-sub" id="countdownInscripcion">Inscripciones en R.H. Unidad</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">🕯️ Cierre de Concurso</div>
+          <div class="kpi-value">31 de Octubre</div>
+          <div class="kpi-sub" id="countdownCierre">Deliberación y Premiación</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">👥 Equipos Participantes</div>
+          <div class="kpi-value" id="kpiTotalEquipos">0</div>
+          <div class="kpi-sub">Departamentos registrados</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">📸 Galería de Altares</div>
+          <div class="kpi-value" id="kpiTotalFotos">0</div>
+          <div class="kpi-sub">Fotografías registradas</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION: PREMIACIÓN OFICIAL Y PODIO DE GANADORES
+         ===================================================================== -->
+    <section id="seccionPremiacion">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div>
+            <h2 class="section-title">🏆 Premiación Oficial y Podio de Altares</h2>
+            <p class="section-subtitle">Selecciona o guarda a los equipos ganadores de los 3 primeros lugares oficiales</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="celebratePodium()">✨ Celebrar Podio con Lluvia de Cempasúchil</button>
+      </div>
+
+      <div class="podium-grid">
+        <!-- 1ER LUGAR -->
+        <div class="podium-card place-1">
+          <div class="medal-badge">🥇</div>
+          <div class="place-title">1er Lugar Oficial</div>
+          <div class="prize-amount">$3,000</div>
+          <div class="winner-box" id="winnerBox1"></div>
+          <select class="winner-select" id="selectWinner1" onchange="assignWinner('primerLugar', this.value)">
+            <option value="">— Seleccionar equipo ganador (1er Lugar) —</option>
+          </select>
+        </div>
+
+        <!-- 2DO LUGAR -->
+        <div class="podium-card place-2">
+          <div class="medal-badge">🥈</div>
+          <div class="place-title">2do Lugar Oficial</div>
+          <div class="prize-amount">$2,000</div>
+          <div class="winner-box" id="winnerBox2"></div>
+          <select class="winner-select" id="selectWinner2" onchange="assignWinner('segundoLugar', this.value)">
+            <option value="">— Seleccionar equipo ganador (2do Lugar) —</option>
+          </select>
+        </div>
+
+        <!-- 3ER LUGAR -->
+        <div class="podium-card place-3">
+          <div class="medal-badge">🥉</div>
+          <div class="place-title">3er Lugar Oficial</div>
+          <div class="prize-amount">$1,500</div>
+          <div class="winner-box" id="winnerBox3"></div>
+          <select class="winner-select" id="selectWinner3" onchange="assignWinner('tercerLugar', this.value)">
+            <option value="">— Seleccionar equipo ganador (3er Lugar) —</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION: REGISTRO DE EQUIPOS Y GALERÍA DE ALTARES
+         ===================================================================== -->
+    <section id="seccionEquipos">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div>
+            <h2 class="section-title">🌼 Registro de Equipos y Galería de Altares</h2>
+            <p class="section-subtitle">Formato oficial interactivo de Capital Humano • Guarda equipos, folios RH, solicitud de materiales y fotografías</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-split">
+        <!-- LEFT COLUMN: OFFICIAL REGISTRATION FORM -->
+        <aside class="form-panel">
+          <div class="form-panel-header">
+            <h3 id="formTitle">📋 Formato Oficial de Inscripción</h3>
+            <p>Complete el presente formato para registrar a su equipo participante.</p>
+          </div>
+
+          <form id="teamForm" onsubmit="saveTeamForm(event)">
+            <input type="hidden" id="editTeamId" value="" />
+
+            <div class="field-group">
+              <label class="field-label">
+                <span class="num-pill">01</span>
+                Fecha de inscripción
+              </label>
+              <input type="date" id="fechaInscripcion" class="input-control" required />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">
+                <span class="num-pill c2">02</span>
+                Nombre del líder
+              </label>
+              <input type="text" id="nombreLider" class="input-control" placeholder="Nombre completo del representante responsable" required />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">
+                <span class="num-pill c3">03</span>
+                Departamento participante
+              </label>
+              <input type="text" id="departamentoParticipante" list="listaDepartamentos" class="input-control" placeholder="Ej. Mina, Planta, Mantenimiento, Seguridad..." required />
+              <datalist id="listaDepartamentos">
+                <option value="Mina / Operación Minera"></option>
+                <option value="Planta de Beneficio / Molino"></option>
+                <option value="Mantenimiento Mecánico y Eléctrico"></option>
+                <option value="Seguridad, Salud y Medio Ambiente"></option>
+                <option value="Geología, Planeación e Ingeniería"></option>
+                <option value="Laboratorio Químico y Muestreo"></option>
+                <option value="Almacén, Compras y Logística"></option>
+                <option value="Administración y Finanzas"></option>
+                <option value="Capital Humano / R.H. Unidad"></option>
+                <option value="Campamento y Servicios Generales"></option>
+              </datalist>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">
+                <span class="num-pill c4">04</span>
+                Nombre del equipo
+              </label>
+              <input type="text" id="nombreEquipo" class="input-control" placeholder="Nombre distintivo del equipo o título del altar" required />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">
+                🏷️ Folio RH y Dedicatoria (Opcional)
+              </label>
+              <div style="display: grid; grid-template-columns: 125px 1fr; gap: 8px;">
+                <input type="text" id="folioRH" class="input-control" placeholder="Folio RH" />
+                <input type="text" id="dedicatoriaAltar" class="input-control" placeholder="Homenaje o temática del altar..." />
+              </div>
+            </div>
+
+            <!-- SECCIÓN DE MATERIALES IGUAL AL PDF -->
+            <div class="materiales-box">
+              <div class="materiales-title">📦 Solicitud de Materiales</div>
+              <div class="radio-row">
+                <label class="radio-option">
+                  <input type="radio" name="requiereMateriales" value="si" />
+                  Sí requiere materiales
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="requiereMateriales" value="no" checked />
+                  No requiere materiales
+                </label>
+              </div>
+              <div class="materiales-emails">
+                En caso de requerir materiales, favor de solicitarlos previamente a Recursos Humanos mediante los siguientes correos:<br/>
+                <a href="mailto:pedro.deleon@grupobacis.com?subject=Solicitud%20de%20Materiales%20-%20Concurso%20Altares%20de%20Muertos">📧 pedro.deleon@grupobacis.com</a>
+                <a href="mailto:jesus.martinez@grupobacis.com?subject=Solicitud%20de%20Materiales%20-%20Concurso%20Altares%20de%20Muertos">📧 jesus.martinez@grupobacis.com</a>
+              </div>
+            </div>
+
+            <!-- SUBIDA DE FOTOS DEL EQUIPO / ALTAR -->
+            <div class="field-group">
+              <label class="field-label">📸 Fotografías del Equipo / Altar</label>
+              <div class="photo-dropzone" onclick="document.getElementById('photoInput').click()">
+                <div style="font-size: 1.5rem; margin-bottom: 4px;">📷</div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: var(--cream);">Haz clic aquí para agregar fotos del altar o equipo</div>
+                <div style="font-size: 0.73rem; color: var(--text-soft);">Puedes subir varias imágenes (se optimizan y guardan automáticamente)</div>
+                <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handleFormPhotos(this.files)" />
+              </div>
+              <div id="formPhotoPreviews" class="photo-previews"></div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 16px;">
+              <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center; padding: 12px;">
+                💾 Guardar Equipo en el Altar
+              </button>
+              <button type="button" id="btnCancelEdit" class="btn" style="display: none;" onclick="resetTeamForm()">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </aside>
+
+        <!-- RIGHT COLUMN: REGISTERED TEAMS & ALTAR GALLERY -->
+        <div>
+          <div class="filter-bar">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="searchInput" placeholder="Buscar por nombre de equipo, líder, departamento o Folio RH..." oninput="renderTeams()" />
+            </div>
+            <div class="filter-pills">
+              <button class="filter-pill active" data-filter="all" onclick="setFilter('all', this)">Todos</button>
+              <button class="filter-pill" data-filter="winners" onclick="setFilter('winners', this)">🏆 En Podio</button>
+              <button class="filter-pill" data-filter="photos" onclick="setFilter('photos', this)">📸 Con Fotos</button>
+              <button class="filter-pill" data-filter="materials" onclick="setFilter('materials', this)">📦 Requieren Materiales</button>
+            </div>
+          </div>
+
+          <div id="teamsGrid" class="teams-grid"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Hidden input to add photos directly to an existing team card -->
+  <input type="file" id="quickPhotoInput" accept="image/*" multiple style="display:none" onchange="handleQuickPhotoUpload(this.files)" />
+
+  <!-- =======================================================================
+       MODAL 1: OFFICIAL CONTEST POSTER ("LA MAGIA DE RECORDAR")
+       ======================================================================= -->
+  <div class="modal-backdrop" id="posterModal" onclick="if(event.target===this) closePosterModal()">
+    <div class="modal-box" style="max-width: 560px; text-align: center;">
+      <button class="modal-close" onclick="closePosterModal()">✕</button>
+      <h3 style="font-family: 'Cinzel', serif; color: var(--cempasuchil-bright); margin-bottom: 12px;">
+        🌼 Convocatoria Oficial – Grupo Bacis
+      </h3>
+      <img src="cartel_oficial.png" alt="Cartel Oficial Concurso de Altares de Muertos Grupo Bacis" style="width: 100%; border-radius: 14px; border: 1.5px solid var(--cempasuchil-bright);" />
+      <div style="margin-top: 14px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <a href="cartel_oficial.png" download="Cartel_Concurso_Altares_Muertos_Grupo_Bacis.png" class="btn btn-primary">⬇️ Descargar Cartel</a>
+        <a href="Formato_Inscripcion_Concurso_Altares_Muertos_Grupo_Bacis.pdf" download class="btn btn-turquesa">📄 Descargar Formato PDF Editable</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 2: PHOTO LIGHTBOX GALLERY
+       ======================================================================= -->
+  <div class="modal-backdrop" id="lightboxModal" onclick="if(event.target===this) closeLightbox()">
+    <div class="modal-box" style="max-width: 880px; text-align: center;">
+      <button class="modal-close" onclick="closeLightbox()">✕</button>
+      <h3 id="lightboxTitle" style="font-family: 'Cinzel', serif; color: var(--cempasuchil-bright); margin-bottom: 4px;"></h3>
+      <p id="lightboxMeta" style="font-size: 0.85rem; color: var(--turquesa-light); margin-bottom: 14px;"></p>
+      <div style="position: relative; background: #09060e; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 183, 3, 0.35);">
+        <img id="lightboxMainImg" src="" alt="Fotografía del Altar" style="max-height: 62vh; max-width: 100%; object-fit: contain; display: block; margin: 0 auto;" />
+      </div>
+      <div id="lightboxThumbs" class="thumb-strip" style="justify-content: center; margin-top: 14px;"></div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 3: BACKUP & GITHUB SYNC
+       ======================================================================= -->
+  <div class="modal-backdrop" id="syncModal" onclick="if(event.target===this) closeSyncModal()">
+    <div class="modal-box" style="max-width: 620px;">
+      <button class="modal-close" onclick="closeSyncModal()">✕</button>
+      <h3 style="font-family: 'Cinzel', serif; color: var(--cempasuchil-bright); margin-bottom: 8px;">
+        💾 Guardado Permanente y Publicación en GitHub
+      </h3>
+      <p style="font-size: 0.88rem; color: var(--text-soft); line-height: 1.55; margin-bottom: 16px;">
+        Todos los equipos, fotografías y lugares de premiación se guardan <strong>automáticamente</strong> en este navegador.
+        Además, puedes descargar el archivo oficial <code>datos_equipos.json</code> para respaldarlo o subirlo a tu repositorio de <strong>GitHub</strong> para que todos vean los mismos datos desde cualquier celular o computadora.
+      </p>
+
+      <div style="display: grid; gap: 12px; margin-bottom: 18px;">
+        <button class="btn btn-primary" style="justify-content: center; padding: 13px;" onclick="exportDataJSON()">
+          ⬇️ Descargar archivo actualizado (datos_equipos.json)
+        </button>
+
+        <button class="btn btn-turquesa" style="justify-content: center; padding: 13px;" onclick="document.getElementById('importJsonInput').click()">
+          📂 Cargar / Restaurar desde archivo (datos_equipos.json)
+        </button>
+        <input type="file" id="importJsonInput" accept=".json" style="display:none" onchange="importDataJSON(this.files[0])" />
+      </div>
+
+      <div style="background: rgba(0, 168, 150, 0.1); border: 1px solid rgba(0, 168, 150, 0.35); border-radius: 12px; padding: 14px; font-size: 0.82rem; color: var(--cream); line-height: 1.55;">
+        <strong>💡 ¿Cómo actualizar los datos públicos en GitHub Pages?</strong>
+        <ol style="margin-left: 18px; margin-top: 6px; color: var(--text-soft);">
+          <li>Registra tus equipos, sube sus fotos y asigna los ganadores del podio aquí en la página.</li>
+          <li>Haz clic en <strong>«Descargar archivo actualizado (datos_equipos.json)»</strong>.</li>
+          <li>Guárdalo dentro de la carpeta del proyecto (reemplazando <code>datos_equipos.json</code>) y haz <em>Commit &amp; Push</em> en GitHub Desktop.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div style="margin-bottom: 6px; font-family: 'Cinzel', serif; color: var(--cempasuchil-bright); font-weight: 700;">
+      GRUPO BACIS • CAPITAL HUMANO — R.H. UNIDAD
+    </div>
+    <div>
+      Tradicional Concurso de Altares de Muertos «La Magia de Recordar» • Inscripción límite: 23 de octubre • Cierre: 31 de octubre
+    </div>
+    <div style="margin-top: 6px; font-size: 0.78rem;">
+      Solicitud de materiales: <a href="mailto:pedro.deleon@grupobacis.com" style="color: var(--turquesa-light);">pedro.deleon@grupobacis.com</a> |
+      <a href="mailto:jesus.martinez@grupobacis.com" style="color: var(--turquesa-light);">jesus.martinez@grupobacis.com</a>
+    </div>
+  </footer>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* =========================================================================
+       1. DECORATIVE SVG GENERATORS (PAPEL PICADO & CEMPASÚCHIL CORNERS)
+       ========================================================================= */
+    function renderDecorativeSVGs() {
+      const colors = ['#00a896', '#d81b60', '#f58a07', '#ffb703', '#f58a07', '#d81b60', '#00a896', '#d81b60'];
+      const strip = colors.map((col) => `
+        <svg class="picado-flag" viewBox="0 0 120 52" preserveAspectRatio="none">
+          <path d="M 0,0 L 120,0 L 120,40 L 110,50 L 100,40 L 90,50 L 80,40 L 70,50 L 60,40 L 50,50 L 40,40 L 30,50 L 20,40 L 10,50 L 0,40 Z" fill="${col}" opacity="0.94"/>
+          <rect x="12" y="5" width="16" height="4" rx="1.5" fill="#0b0811"/>
+          <rect x="36" y="5" width="16" height="4" rx="1.5" fill="#0b0811"/>
+          <rect x="68" y="5" width="16" height="4" rx="1.5" fill="#0b0811"/>
+          <rect x="92" y="5" width="16" height="4" rx="1.5" fill="#0b0811"/>
+          <circle cx="60" cy="24" r="9" fill="#0b0811"/>
+          <circle cx="60" cy="24" r="4" fill="${col}"/>
+          <polygon points="30,24 37,18 44,24 37,30" fill="#0b0811"/>
+          <polygon points="76,24 83,18 90,24 83,30" fill="#0b0811"/>
+          <circle cx="20" cy="24" r="3" fill="#0b0811"/>
+          <circle cx="100" cy="24" r="3" fill="#0b0811"/>
+        </svg>
+      `).join('');
+      document.getElementById('topPapelPicado').innerHTML = `<div class="papel-picado-strip">${strip}</div>`;
+
+      const flowerSVG = `
+        <svg viewBox="0 0 80 80" width="100%" height="100%">
+          <circle cx="32" cy="32" r="24" fill="#d95f02"/>
+          <circle cx="32" cy="32" r="19" fill="#f58a07"/>
+          <circle cx="32" cy="32" r="13" fill="#ffb703"/>
+          <circle cx="32" cy="32" r="6" fill="#d95f02"/>
+        </svg>
+      `;
+      ['flowerTL', 'flowerTR', 'flowerBL', 'flowerBR'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = flowerSVG;
+      });
+    }
+
+    /* =========================================================================
+       2. CINEMATIC MINING ALTAR INTRO ANIMATION
+       ========================================================================= */
+    let introTimer = null;
+    function runIntroAltarSequence() {
+      const intro = document.getElementById('miningAltarIntro');
+      const fill = document.getElementById('introProgressFill');
+      const status = document.getElementById('introStatusText');
+      intro.classList.remove('hidden');
+
+      const steps = [
+        { pct: 25, msg: 'Iluminando el socavón minero y encendiendo veladoras...' },
+        { pct: 60, msg: 'Tendiendo el camino de flor de cempasúchil...' },
+        { pct: 90, msg: 'Cargando registro oficial de Capital Humano – Grupo Bacis...' },
+        { pct: 100, msg: '« La Magia de Recordar » • ¡Bienvenidos!' }
+      ];
+
+      let i = 0;
+      fill.style.width = '8%';
+      clearInterval(introTimer);
+      introTimer = setInterval(() => {
+        if (i < steps.length) {
+          fill.style.width = steps[i].pct + '%';
+          status.textContent = steps[i].msg;
+          i++;
+        } else {
+          clearInterval(introTimer);
+          setTimeout(() => closeIntroAltar(), 650);
+        }
+      }, 720);
+    }
+
+    function closeIntroAltar() {
+      clearInterval(introTimer);
+      document.getElementById('miningAltarIntro').classList.add('hidden');
+    }
+
+    function replayIntroAltar() {
+      runIntroAltarSequence();
+    }
+
+    /* =========================================================================
+       3. FLOATING CEMPASÚCHIL PETALS CANVAS
+       ========================================================================= */
+    const canvas = document.getElementById('petalsCanvas');
+    const ctx = canvas.getContext('2d');
+    let petals = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createPetal(burst = false) {
+      const palette = ['#f58a07', '#ffb703', '#fb8500', '#d95f02', '#ffbe0b'];
+      return {
+        x: Math.random() * canvas.width,
+        y: burst ? (Math.random() * canvas.height * 0.4) : (-20 - Math.random() * canvas.height),
+        r: 4 + Math.random() * 6,
+        vy: (burst ? 1.8 : 0.55) + Math.random() * 1.1,
+        vx: -0.5 + Math.random() * 1.0,
+        angle: Math.random() * Math.PI * 2,
+        spin: -0.02 + Math.random() * 0.04,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        alpha: 0.45 + Math.random() * 0.45
+      };
+    }
+
+    for (let i = 0; i < 38; i++) {
+      const p = createPetal();
+      p.y = Math.random() * canvas.height;
+      petals.push(p);
+    }
+
+    function animatePetals() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i];
+        p.y += p.vy;
+        p.x += p.vx + Math.sin(p.angle) * 0.35;
+        p.angle += p.spin;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.r, p.r * 0.58, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (p.y > canvas.height + 24) {
+          if (petals.length > 38) {
+            petals.splice(i, 1);
+            i--;
+          } else {
+            petals[i] = createPetal(false);
+            petals[i].y = -15;
+          }
+        }
+      }
+      requestAnimationFrame(animatePetals);
+    }
+    animatePetals();
+
+    function celebratePodium() {
+      for (let i = 0; i < 65; i++) {
+        petals.push(createPetal(true));
+      }
+      showToast('🌼 ¡Lluvia de cempasúchil en honor a los equipos de Grupo Bacis!');
+    }
+
+    /* =========================================================================
+       4. DATABASE & PERSISTENCE (IndexedDB + LocalStorage + datos_equipos.json)
+       ========================================================================= */
+    const STORAGE_KEY = 'bacis_concurso_altares_2026_v1';
+    const DB_NAME = 'BacisAltaresDB';
+    const DB_STORE = 'concursoState';
+
+    let appState = {
+      concurso: 'Tradicional Concurso de Altares de Muertos - Grupo Bacis',
+      lema: 'La Magia de Recordar',
+      fechaLimiteInscripcion: '2026-10-23',
+      fechaCierreConcurso: '2026-10-31',
+      premios: {
+        primerLugar: { monto: '$3,000', equipoId: null },
+        segundoLugar: { monto: '$2,000', equipoId: null },
+        tercerLugar: { monto: '$1,500', equipoId: null }
+      },
+      equipos: []
+    };
+
+    let currentFormPhotos = [];
+    let currentFilter = 'all';
+    let quickUploadTargetTeamId = null;
+
+    function openIDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(DB_STORE)) {
+            db.createObjectStore(DB_STORE);
+          }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveState() {
+      try {
+        const db = await openIDB();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction(DB_STORE, 'readwrite');
+          tx.objectStore(DB_STORE).put(appState, 'main');
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (e) {
+        console.warn('IndexedDB fallback to localStorage:', e);
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.warn('LocalStorage quota note:', e);
+      }
+      updateUI();
+    }
+
+    async function loadInitialState() {
+      // 1. Try IndexedDB first
+      let loaded = null;
+      try {
+        const db = await openIDB();
+        loaded = await new Promise((resolve) => {
+          const tx = db.transaction(DB_STORE, 'readonly');
+          const req = tx.objectStore(DB_STORE).get('main');
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => resolve(null);
+        });
+      } catch (e) {}
+
+      // 2. Fallback to localStorage
+      if (!loaded) {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) loaded = JSON.parse(raw);
+        } catch (e) {}
+      }
+
+      // 3. Also check repository's datos_equipos.json (for GitHub Pages viewers)
+      try {
+        const res = await fetch('datos_equipos.json?t=' + Date.now());
+        if (res.ok) {
+          const remoteData = await res.json();
+          if (remoteData && Array.isArray(remoteData.equipos)) {
+            if (!loaded || (loaded.equipos.length === 0 && remoteData.equipos.length > 0)) {
+              loaded = remoteData;
+            }
+          }
+        }
+      } catch (e) {}
+
+      if (loaded && Array.isArray(loaded.equipos)) {
+        appState = Object.assign(appState, loaded);
+      }
+      updateUI();
+    }
+
+    /* =========================================================================
+       5. IMAGE COMPRESSION & PHOTO HANDLING
+       ========================================================================= */
+    function compressImageFile(file, maxWidth = 1280, quality = 0.82) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            const c = document.createElement('canvas');
+            c.width = w;
+            c.height = h;
+            const context = c.getContext('2d');
+            context.drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleFormPhotos(fileList) {
+      if (!fileList || !fileList.length) return;
+      for (const file of Array.from(fileList)) {
+        const dataUrl = await compressImageFile(file);
+        currentFormPhotos.push(dataUrl);
+      }
+      renderFormPhotoPreviews();
+      document.getElementById('photoInput').value = '';
+    }
+
+    function renderFormPhotoPreviews() {
+      const container = document.getElementById('formPhotoPreviews');
+      container.innerHTML = currentFormPhotos.map((src, idx) => `
+        <div class="preview-thumb">
+          <img src="${src}" alt="Preview ${idx + 1}" />
+          <button type="button" class="preview-remove" onclick="removeFormPhoto(${idx})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeFormPhoto(idx) {
+      currentFormPhotos.splice(idx, 1);
+      renderFormPhotoPreviews();
+    }
+
+    function triggerQuickPhotoUpload(teamId) {
+      quickUploadTargetTeamId = teamId;
+      document.getElementById('quickPhotoInput').click();
+    }
+
+    async function handleQuickPhotoUpload(fileList) {
+      if (!fileList || !fileList.length || !quickUploadTargetTeamId) return;
+      const team = appState.equipos.find(t => t.id === quickUploadTargetTeamId);
+      if (!team) return;
+      if (!Array.isArray(team.fotos)) team.fotos = [];
+      for (const file of Array.from(fileList)) {
+        const dataUrl = await compressImageFile(file);
+        team.fotos.push(dataUrl);
+      }
+      document.getElementById('quickPhotoInput').value = '';
+      await saveState();
+      showToast(`📸 Se agregaron fotografías al altar de «${team.nombreEquipo}»`);
+    }
+
+    /* =========================================================================
+       6. FORM SUBMISSION, EDITING & DELETION
+       ========================================================================= */
+    function getNextFolioRH() {
+      const nextNum = appState.equipos.length + 1;
+      return `RH-ALTAR-${String(nextNum).padStart(2, '0')}`;
+    }
+
+    function resetTeamForm() {
+      document.getElementById('editTeamId').value = '';
+      document.getElementById('fechaInscripcion').value = new Date().toISOString().split('T')[0];
+      document.getElementById('nombreLider').value = '';
+      document.getElementById('departamentoParticipante').value = '';
+      document.getElementById('nombreEquipo').value = '';
+      document.getElementById('folioRH').value = getNextFolioRH();
+      document.getElementById('dedicatoriaAltar').value = '';
+      document.querySelector('input[name="requiereMateriales"][value="no"]').checked = true;
+      currentFormPhotos = [];
+      renderFormPhotoPreviews();
+      document.getElementById('formTitle').innerHTML = '📋 Formato Oficial de Inscripción';
+      document.getElementById('btnCancelEdit').style.display = 'none';
+    }
+
+    async function saveTeamForm(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editTeamId').value;
+      const fechaInscripcion = document.getElementById('fechaInscripcion').value;
+      const nombreLider = document.getElementById('nombreLider').value.trim();
+      const departamentoParticipante = document.getElementById('departamentoParticipante').value.trim();
+      const nombreEquipo = document.getElementById('nombreEquipo').value.trim();
+      const folioRH = document.getElementById('folioRH').value.trim() || getNextFolioRH();
+      const dedicatoriaAltar = document.getElementById('dedicatoriaAltar').value.trim();
+      const requiereMateriales = document.querySelector('input[name="requiereMateriales"]:checked').value === 'si';
+
+      if (editId) {
+        const idx = appState.equipos.findIndex(t => t.id === editId);
+        if (idx !== -1) {
+          appState.equipos[idx] = {
+            ...appState.equipos[idx],
+            fechaInscripcion,
+            nombreLider,
+            departamentoParticipante,
+            nombreEquipo,
+            folioRH,
+            dedicatoriaAltar,
+            requiereMateriales,
+            fotos: [...currentFormPhotos]
+          };
+          showToast(`✅ Datos actualizados para el equipo «${nombreEquipo}»`);
+        }
+      } else {
+        const nuevoEquipo = {
+          id: 'eq_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          fechaInscripcion,
+          nombreLider,
+          departamentoParticipante,
+          nombreEquipo,
+          folioRH,
+          dedicatoriaAltar,
+          requiereMateriales,
+          fotos: [...currentFormPhotos],
+          creadoEn: new Date().toISOString()
+        };
+        appState.equipos.unshift(nuevoEquipo);
+        showToast(`🌼 Equipo «${nombreEquipo}» registrado con Folio ${folioRH}`);
+      }
+
+      await saveState();
+      resetTeamForm();
+    }
+
+    function editTeam(teamId) {
+      const team = appState.equipos.find(t => t.id === teamId);
+      if (!team) return;
+      document.getElementById('editTeamId').value = team.id;
+      document.getElementById('fechaInscripcion').value = team.fechaInscripcion || '';
+      document.getElementById('nombreLider').value = team.nombreLider || '';
+      document.getElementById('departamentoParticipante').value = team.departamentoParticipante || '';
+      document.getElementById('nombreEquipo').value = team.nombreEquipo || '';
+      document.getElementById('folioRH').value = team.folioRH || '';
+      document.getElementById('dedicatoriaAltar').value = team.dedicatoriaAltar || '';
+      const valMat = team.requiereMateriales ? 'si' : 'no';
+      document.querySelector(`input[name="requiereMateriales"][value="${valMat}"]`).checked = true;
+      currentFormPhotos = Array.isArray(team.fotos) ? [...team.fotos] : [];
+      renderFormPhotoPreviews();
+      document.getElementById('formTitle').innerHTML = '✏️ Editando Equipo: ' + escapeHtml(team.nombreEquipo);
+      document.getElementById('btnCancelEdit').style.display = 'inline-flex';
+      document.getElementById('seccionEquipos').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function deleteTeam(teamId) {
+      const team = appState.equipos.find(t => t.id === teamId);
+      if (!team) return;
+      if (!confirm(`¿Deseas eliminar el registro del equipo «${team.nombreEquipo}»?`)) return;
+      appState.equipos = appState.equipos.filter(t => t.id !== teamId);
+      ['primerLugar', 'segundoLugar', 'tercerLugar'].forEach(key => {
+        if (appState.premios[key].equipoId === teamId) {
+          appState.premios[key].equipoId = null;
+        }
+      });
+      await saveState();
+      showToast('🗑️ Equipo eliminado del registro.');
+    }
+
+    /* =========================================================================
+       7. PODIUM & WINNER ASSIGNMENT
+       ========================================================================= */
+    async function assignWinner(placeKey, teamId) {
+      if (teamId) {
+        // Ensure a team isn't in two places simultaneously
+        ['primerLugar', 'segundoLugar', 'tercerLugar'].forEach(k => {
+          if (k !== placeKey && appState.premios[k].equipoId === teamId) {
+            appState.premios[k].equipoId = null;
+          }
+        });
+      }
+      appState.premios[placeKey].equipoId = teamId || null;
+      await saveState();
+      if (teamId) {
+        celebratePodium();
+      }
+    }
+
+    function renderPodium() {
+      const places = [
+        { key: 'primerLugar', boxId: 'winnerBox1', selectId: 'selectWinner1', label: '1er Lugar ($3,000)' },
+        { key: 'segundoLugar', boxId: 'winnerBox2', selectId: 'selectWinner2', label: '2do Lugar ($2,000)' },
+        { key: 'tercerLugar', boxId: 'winnerBox3', selectId: 'selectWinner3', label: '3er Lugar ($1,500)' }
+      ];
+
+      places.forEach(p => {
+        const box = document.getElementById(p.boxId);
+        const sel = document.getElementById(p.selectId);
+        const winnerId = appState.premios?.[p.key]?.equipoId || '';
+        const team = appState.equipos.find(t => t.id === winnerId);
+
+        sel.innerHTML = `<option value="">— Seleccionar ganador ${p.label} —</option>` +
+          appState.equipos.map(eq => `
+            <option value="${eq.id}" ${eq.id === winnerId ? 'selected' : ''}>
+              ${escapeHtml(eq.nombreEquipo)} (${escapeHtml(eq.departamentoParticipante)})
+            </option>
+          `).join('');
+
+        if (team) {
+          const heroPhoto = (team.fotos && team.fotos.length > 0)
+            ? `<img src="${team.fotos[0]}" class="winner-photo" alt="${escapeHtml(team.nombreEquipo)}" onclick="openLightbox('${team.id}', 0)" />`
+            : `<div style="font-size: 2.2rem; margin-bottom: 6px;">🕯️🌼</div>`;
+          box.innerHTML = `
+            ${heroPhoto}
+            <div class="winner-team-name">${escapeHtml(team.nombreEquipo)}</div>
+            <div class="winner-meta">${escapeHtml(team.departamentoParticipante)} • ${escapeHtml(team.folioRH)}</div>
+            <div class="winner-leader">Líder: ${escapeHtml(team.nombreLider)}</div>
+          `;
+        } else {
+          box.innerHTML = `
+            <div style="font-size: 1.8rem; margin-bottom: 6px; opacity: 0.65;">🕯️</div>
+            <div class="winner-empty">Pendiente de premiación<br/>(Cierre: 31 de octubre)</div>
+          `;
+        }
+      });
+    }
+
+    /* =========================================================================
+       8. RENDER TEAM CARDS & GALLERY
+       ========================================================================= */
+    function setFilter(filterName, btnEl) {
+      currentFilter = filterName;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderTeams();
+    }
+
+    function getTeamAwardBadge(teamId) {
+      if (appState.premios?.primerLugar?.equipoId === teamId) {
+        return `<span class="award-ribbon p1">🥇 1er Lugar • $3,000</span>`;
+      }
+      if (appState.premios?.segundoLugar?.equipoId === teamId) {
+        return `<span class="award-ribbon p2">🥈 2do Lugar • $2,000</span>`;
+      }
+      if (appState.premios?.tercerLugar?.equipoId === teamId) {
+        return `<span class="award-ribbon p3">🥉 3er Lugar • $1,500</span>`;
+      }
+      return '';
+    }
+
+    function renderTeams() {
+      const grid = document.getElementById('teamsGrid');
+      const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+      const winnerIds = new Set([
+        appState.premios?.primerLugar?.equipoId,
+        appState.premios?.segundoLugar?.equipoId,
+        appState.premios?.tercerLugar?.equipoId
+      ].filter(Boolean));
+
+      const filtered = appState.equipos.filter(eq => {
+        if (currentFilter === 'winners' && !winnerIds.has(eq.id)) return false;
+        if (currentFilter === 'photos' && (!eq.fotos || eq.fotos.length === 0)) return false;
+        if (currentFilter === 'materials' && !eq.requiereMateriales) return false;
+        if (query) {
+          const hay = `${eq.nombreEquipo} ${eq.nombreLider} ${eq.departamentoParticipante} ${eq.folioRH} ${eq.dedicatoriaAltar || ''}`.toLowerCase();
+          return hay.includes(query);
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🕯️🌼⛏️</div>
+            <h3 style="font-family: 'Cinzel', serif; color: var(--cempasuchil-bright); margin-bottom: 6px;">
+              ${appState.equipos.length === 0 ? 'Aún no hay equipos registrados en el Altar' : 'No se encontraron equipos con ese filtro'}
+            </h3>
+            <p style="color: var(--text-soft); font-size: 0.9rem; max-width: 460px; margin: 0 auto;">
+              Utiliza el <strong>Formato Oficial de Inscripción</strong> de la izquierda para registrar a los equipos participantes, asignarles su Folio RH y subir las fotografías de sus altares.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(eq => {
+        const photos = Array.isArray(eq.fotos) ? eq.fotos : [];
+        const hasPhotos = photos.length > 0;
+        const bannerContent = hasPhotos
+          ? `<img src="${photos[0]}" class="main-photo" alt="${escapeHtml(eq.nombreEquipo)}" onclick="openLightbox('${eq.id}', 0)" />`
+          : `<div style="text-align: center; padding: 20px; cursor: pointer;" onclick="triggerQuickPhotoUpload('${eq.id}')">
+               <div style="font-size: 2.6rem; margin-bottom: 6px;">🕯️🌼</div>
+               <div style="font-size: 0.8rem; color: var(--cempasuchil-bright); font-weight: 700;">+ Haz clic para subir foto del altar</div>
+             </div>`;
+
+        const thumbsHtml = photos.length > 1
+          ? `<div class="thumb-strip">
+               ${photos.map((src, idx) => `<img src="${src}" alt="Miniatura ${idx+1}" onclick="openLightbox('${eq.id}', ${idx})" />`).join('')}
+             </div>`
+          : '';
+
+        return `
+          <article class="team-card">
+            <div class="team-card-banner">
+              <span class="folio-pill">${escapeHtml(eq.folioRH || 'SIN FOLIO')}</span>
+              ${getTeamAwardBadge(eq.id)}
+              ${bannerContent}
+              <span class="photo-count-pill" onclick="${hasPhotos ? `openLightbox('${eq.id}', 0)` : `triggerQuickPhotoUpload('${eq.id}')`}">
+                📷 ${photos.length} foto${photos.length === 1 ? '' : 's'}
+              </span>
+            </div>
+
+            <div class="team-card-body">
+              <span class="dept-tag">${escapeHtml(eq.departamentoParticipante)}</span>
+              <h3 class="team-name-title">${escapeHtml(eq.nombreEquipo)}</h3>
+
+              <ul class="team-info-list">
+                <li>👤 <strong>Líder:</strong> ${escapeHtml(eq.nombreLider)}</li>
+                <li>📅 <strong>Fecha de inscripción:</strong> ${escapeHtml(eq.fechaInscripcion)}</li>
+                <li>📦 <strong>Materiales RH:</strong> ${eq.requiereMateriales
+                  ? '<span style="color: var(--cempasuchil-bright); font-weight: 700;">Sí requiere materiales</span>'
+                  : '<span style="color: var(--text-soft);">No requiere materiales</span>'}
+                </li>
+                ${eq.dedicatoriaAltar ? `<li>🕯️ <strong>Dedicatoria:</strong> <em>«${escapeHtml(eq.dedicatoriaAltar)}»</em></li>` : ''}
+              </ul>
+
+              ${thumbsHtml}
+
+              <div class="team-card-actions">
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-sm btn-turquesa" onclick="triggerQuickPhotoUpload('${eq.id}')">📷 + Fotos</button>
+                  <button class="btn btn-sm" onclick="editTeam('${eq.id}')">✏️ Editar</button>
+                </div>
+                <button class="btn btn-sm btn-magenta" onclick="deleteTeam('${eq.id}')">🗑️</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function updateUI() {
+      const totalEquipos = appState.equipos.length;
+      const totalFotos = appState.equipos.reduce((acc, eq) => acc + (Array.isArray(eq.fotos) ? eq.fotos.length : 0), 0);
+      document.getElementById('kpiTotalEquipos').textContent = totalEquipos;
+      document.getElementById('kpiTotalFotos').textContent = totalFotos;
+      renderPodium();
+      renderTeams();
+    }
+
+    /* =========================================================================
+       9. MODALS: POSTER, LIGHTBOX & GITHUB JSON EXPORT/IMPORT
+       ========================================================================= */
+    function openPosterModal() {
+      document.getElementById('posterModal').classList.add('open');
+    }
+    function closePosterModal() {
+      document.getElementById('posterModal').classList.remove('open');
+    }
+
+    function openLightbox(teamId, photoIdx = 0) {
+      const team = appState.equipos.find(t => t.id === teamId);
+      if (!team || !team.fotos || !team.fotos.length) return;
+      document.getElementById('lightboxTitle').textContent = team.nombreEquipo;
+      document.getElementById('lightboxMeta').textContent = `${team.departamentoParticipante} • Líder: ${team.nombreLider} • Folio: ${team.folioRH}`;
+      document.getElementById('lightboxMainImg').src = team.fotos[photoIdx] || team.fotos[0];
+
+      document.getElementById('lightboxThumbs').innerHTML = team.fotos.map((src, i) => `
+        <img src="${src}" style="border-width: ${i === photoIdx ? '2.5px' : '1px'};" onclick="openLightbox('${team.id}', ${i})" />
+      `).join('');
+
+      document.getElementById('lightboxModal').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.remove('open');
+    }
+
+    function openSyncModal() {
+      document.getElementById('syncModal').classList.add('open');
+    }
+    function closeSyncModal() {
+      document.getElementById('syncModal').classList.remove('open');
+    }
+
+    function exportDataJSON() {
+      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'datos_equipos.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('💾 Archivo datos_equipos.json descargado correctamente');
+    }
+
+    function importDataJSON(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && Array.isArray(parsed.equipos)) {
+            appState = Object.assign(appState, parsed);
+            await saveState();
+            closeSyncModal();
+            showToast(`✅ Se cargaron ${appState.equipos.length} equipos correctamente`);
+          } else {
+            alert('El archivo JSON no tiene el formato válido del concurso.');
+          }
+        } catch (err) {
+          alert('Error al leer el archivo JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => t.classList.remove('show'), 3600);
+    }
+
+    /* =========================================================================
+       10. INITIALIZATION
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', async () => {
+      renderDecorativeSVGs();
+      runIntroAltarSequence();
+      await loadInitialState();
+      resetTeamForm();
+    });
+  </script>
+</body>
+</html>
