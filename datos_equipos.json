@@ -6,16 +6,59 @@
   "premios": {
     "primerLugar": {
       "monto": "$3,000",
-      "equipoId": null
+      "equipoId": "eq_ganador_1"
     },
     "segundoLugar": {
       "monto": "$2,000",
-      "equipoId": null
+      "equipoId": "eq_ganador_2"
     },
     "tercerLugar": {
       "monto": "$1,500",
-      "equipoId": null
+      "equipoId": "eq_ganador_3"
     }
   },
-  "equipos": []
+  "equipos": [
+    {
+      "id": "eq_ganador_1",
+      "fechaInscripcion": "2026-10-23",
+      "nombreLider": "Abraham Magallanes",
+      "departamentoParticipante": "Geología",
+      "nombreEquipo": "Catrinas Mexicanas",
+      "folioRH": "RH-ALTAR-01",
+      "dedicatoriaAltar": "Primer Lugar Oficial — Concurso de Altares de Muertos",
+      "requiereMateriales": false,
+      "fotos": [
+        "ganador_1.jpeg"
+      ],
+      "creadoEn": "2026-10-23T12:00:00.000Z"
+    },
+    {
+      "id": "eq_ganador_2",
+      "fechaInscripcion": "2026-10-23",
+      "nombreLider": "Anner López",
+      "departamentoParticipante": "Comedor Parajes",
+      "nombreEquipo": "Comedor Parajes",
+      "folioRH": "RH-ALTAR-02",
+      "dedicatoriaAltar": "Segundo Lugar Oficial — Concurso de Altares de Muertos",
+      "requiereMateriales": false,
+      "fotos": [
+        "ganador_2.jpeg"
+      ],
+      "creadoEn": "2026-10-23T12:30:00.000Z"
+    },
+    {
+      "id": "eq_ganador_3",
+      "fechaInscripcion": "2026-10-23",
+      "nombreLider": "Ernesto Paniagua",
+      "departamentoParticipante": "Laboratorio Químico",
+      "nombreEquipo": "Calacas de Alta Ley",
+      "folioRH": "RH-ALTAR-03",
+      "dedicatoriaAltar": "Tercer Lugar Oficial — Concurso de Altares de Muertos",
+      "requiereMateriales": false,
+      "fotos": [
+        "ganador_3.jpeg"
+      ],
+      "creadoEn": "2026-10-23T13:00:00.000Z"
+    }
+  ]
 }

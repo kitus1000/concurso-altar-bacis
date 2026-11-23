@@ -1965,9 +1965,48 @@
     /* =========================================================================
        4. DATABASE & PERSISTENCE (IndexedDB + LocalStorage + datos_equipos.json)
        ========================================================================= */
-    const STORAGE_KEY = 'bacis_concurso_altares_2026_v1';
-    const DB_NAME = 'BacisAltaresDB';
+    const STORAGE_KEY = 'bacis_concurso_altares_2026_v2';
+    const DB_NAME = 'BacisAltaresDB_v2';
     const DB_STORE = 'concursoState';
+
+    const OFFICIAL_TEAMS = [
+      {
+        id: 'eq_ganador_1',
+        fechaInscripcion: '2026-10-23',
+        nombreLider: 'Abraham Magallanes',
+        departamentoParticipante: 'Geología',
+        nombreEquipo: 'Catrinas Mexicanas',
+        folioRH: 'RH-ALTAR-01',
+        dedicatoriaAltar: 'Primer Lugar Oficial — Concurso de Altares de Muertos',
+        requiereMateriales: false,
+        fotos: ['ganador_1.jpeg'],
+        creadoEn: '2026-10-23T12:00:00.000Z'
+      },
+      {
+        id: 'eq_ganador_2',
+        fechaInscripcion: '2026-10-23',
+        nombreLider: 'Anner López',
+        departamentoParticipante: 'Comedor Parajes',
+        nombreEquipo: 'Comedor Parajes',
+        folioRH: 'RH-ALTAR-02',
+        dedicatoriaAltar: 'Segundo Lugar Oficial — Concurso de Altares de Muertos',
+        requiereMateriales: false,
+        fotos: ['ganador_2.jpeg'],
+        creadoEn: '2026-10-23T12:30:00.000Z'
+      },
+      {
+        id: 'eq_ganador_3',
+        fechaInscripcion: '2026-10-23',
+        nombreLider: 'Ernesto Paniagua',
+        departamentoParticipante: 'Laboratorio Químico',
+        nombreEquipo: 'Calacas de Alta Ley',
+        folioRH: 'RH-ALTAR-03',
+        dedicatoriaAltar: 'Tercer Lugar Oficial — Concurso de Altares de Muertos',
+        requiereMateriales: false,
+        fotos: ['ganador_3.jpeg'],
+        creadoEn: '2026-10-23T13:00:00.000Z'
+      }
+    ];
 
     let appState = {
       concurso: 'Tradicional Concurso de Altares de Muertos - Grupo Bacis',
@@ -1975,11 +2014,11 @@
       fechaLimiteInscripcion: '2026-10-23',
       fechaCierreConcurso: '2026-10-31',
       premios: {
-        primerLugar: { monto: '$3,000', equipoId: null },
-        segundoLugar: { monto: '$2,000', equipoId: null },
-        tercerLugar: { monto: '$1,500', equipoId: null }
+        primerLugar: { monto: '$3,000', equipoId: 'eq_ganador_1' },
+        segundoLugar: { monto: '$2,000', equipoId: 'eq_ganador_2' },
+        tercerLugar: { monto: '$1,500', equipoId: 'eq_ganador_3' }
       },
-      equipos: []
+      equipos: [...OFFICIAL_TEAMS]
     };
 
     let currentFormPhotos = [];
@@ -2054,8 +2093,24 @@
         }
       } catch (e) {}
 
-      if (loaded && Array.isArray(loaded.equipos)) {
+      if (loaded && Array.isArray(loaded.equipos) && loaded.equipos.length > 0) {
         appState = Object.assign(appState, loaded);
+        OFFICIAL_TEAMS.forEach(ot => {
+          const existing = appState.equipos.find(e => e.id === ot.id);
+          if (!existing) {
+            appState.equipos.push(ot);
+          } else if (!existing.fotos || existing.fotos.length === 0) {
+            existing.fotos = ot.fotos;
+          }
+        });
+        if (!appState.premios.primerLugar.equipoId) appState.premios.primerLugar.equipoId = 'eq_ganador_1';
+        if (!appState.premios.segundoLugar.equipoId) appState.premios.segundoLugar.equipoId = 'eq_ganador_2';
+        if (!appState.premios.tercerLugar.equipoId) appState.premios.tercerLugar.equipoId = 'eq_ganador_3';
+      } else {
+        appState.equipos = [...OFFICIAL_TEAMS];
+        appState.premios.primerLugar.equipoId = 'eq_ganador_1';
+        appState.premios.segundoLugar.equipoId = 'eq_ganador_2';
+        appState.premios.tercerLugar.equipoId = 'eq_ganador_3';
       }
       updateUI();
     }
